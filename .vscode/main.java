@@ -11,7 +11,7 @@ public class main {
     
     //Escolher a operação matemática:
 
-    System.out.print("eslconhe a operação (+, -, *, /): ");
+    System.out.print("escolhe a operação (+, -, *, /): ");
     char operacao = scanner.next().charAt(0);
     
     //Digitar o número 2:
@@ -34,12 +34,12 @@ public class main {
         if (num2 != 0) {
           resultado = num1 / num2;
         } else {
-          System.out.println("Erro: Nao sabes cacular em java!");
+          System.out.println("Erro: Dividiu por 0 seu burro!");
           return;
         }
         break;
       default:
-        System.out.println("vai se foder deu exeçao nao prevista no incontrol!");
+        System.out.println("Erro de SDK no incontrol!");
         return;
     }
     // Exibir o resultado:
