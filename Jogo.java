@@ -12,7 +12,7 @@ public class Jogo {
     int numeroAleatorio = random.nextInt(90) + 1; // Número aleatório entre 1 e 90
     Scanner scanner = new Scanner(System.in);
     int chute = 0;
-    int tentativas = 5;
+    int tentativas = 7;
 
     // Mensagens de boas-vindas e instruções:
     System.out.println("Bem-vindo ao jogo de adivinhação!");
@@ -37,17 +37,22 @@ public class Jogo {
         System.out.println("Por favor, digite um número entre 1 e 90.");
         continue;
       }
+      
+      // Calcula a diferença entre o palpite e o número aleatório:
+      int diferenca = Math.abs(chute - numeroAleatorio);
 
       // Verifica se o palpite é muito baixo ou muito alto e quando acerta o número:
-      if (chute < numeroAleatorio) {
-        System.out.println("Seu palpite é muito baixo.");
-      } else if (chute > numeroAleatorio) {
-        System.out.println("Seu palpite é muito alto.");
+      if (chute == numeroAleatorio){
+      System.out.println("Parabéns! Você acertou o número: " + numeroAleatorio);
+      } else if (diferenca <= 5) {
+        System.out.println("Quente! Você está muito perto.");
+      } else if (diferenca <= 10) {
+        System.out.println("Morno! Você está perto.");
       } else {
-        System.out.println("Parabéns! Você adivinhou o número!");
-        break;
-      }
+        System.out.println("Frio! Você está longe.");
 
+
+    }
       // Diminui o número de tentativas restantes :
       tentativas--;
       System.out.println("Tentativas restantes: " + tentativas);
@@ -59,4 +64,3 @@ public class Jogo {
     System.out.println("Obrigado por jogar!");
   }
 }
-
