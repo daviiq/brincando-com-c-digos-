@@ -62,7 +62,16 @@ public class Jogo {
     if (tentativas == 0) {
       System.out.println("Você perdeu! O número era: " + numeroAleatorio);
     }
+
+    // Pergunta se o usuário deseja jogar novamente:
+
+    System.out.println("Deseja jogar novamente? (s/n)");
+    String resposta = scanner.next();
+    if (resposta.equalsIgnoreCase("s")) {
+      main(args); 
+    } else {
+      System.out.println("Obrigado por jogar!");
+    }
     scanner.close();
-    System.out.println("Obrigado por jogar!");
   }
 }
