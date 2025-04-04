@@ -48,6 +48,8 @@ public class Jogo {
         System.out.println("Quente! Você está muito perto.");
       } else if (diferenca <= 10) {
         System.out.println("Morno! Você está perto.");
+      } else if (diferenca <= 20) {
+        System.out.println("Já esteve mais longe.");
       } else {
         System.out.println("Frio! Você está longe.");
 
