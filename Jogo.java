@@ -1,5 +1,4 @@
 //Importação de bibliotecas necessárias:
-
 import java.util.Scanner;
 import java.util.Random;
 
@@ -8,8 +7,9 @@ public class Jogo {
 
   // Ideia principal do jogo:
   public static void main(String[] args) {
+
     Random random = new Random();
-    int numeroAleatorio = random.nextInt(90) + 1; // Número aleatório entre 1 e 90
+    int numeroAleatorio = random.nextInt(2) + 1; // Número aleatório entre 1 e 90
     Scanner scanner = new Scanner(System.in);
     int chute = 0;
     int tentativas = 7;
@@ -32,19 +32,22 @@ public class Jogo {
       }
 
       // Verifica se o palpite está dentro do intervalo permitido:
-      // Se o palpite for menor que 1 ou maior que 90, exibe mensagem de erro:
       if (chute < 1 || chute > 90) {
         System.out.println("Por favor, digite um número entre 1 e 90.");
         continue;
       }
-      
+
+      // Verifica se acertou o número:
+      if (chute == numeroAleatorio) {
+        System.out.println("Parabéns! Você acertou!");
+        break;
+      }
+
       // Calcula a diferença entre o palpite e o número aleatório:
       int diferenca = Math.abs(chute - numeroAleatorio);
 
-      // Verifica se o palpite é muito baixo ou muito alto e quando acerta o número:
-      if (chute == numeroAleatorio){
-      System.out.println("Parabéns! Você acertou o número: " + numeroAleatorio);
-      } else if (diferenca <= 5) {
+      // Dá dicas com base na diferença:
+      if (diferenca <= 5) {
         System.out.println("Quente! Você está muito perto.");
       } else if (diferenca <= 10) {
         System.out.println("Morno! Você está perto.");
@@ -52,19 +55,18 @@ public class Jogo {
         System.out.println("Já esteve mais longe.");
       } else {
         System.out.println("Frio! Você está longe.");
+      }
 
-
-    }
       // Diminui o número de tentativas restantes :
       tentativas--;
       System.out.println("Tentativas restantes: " + tentativas);
     }
-    if (tentativas == 0) {
+
+    if (tentativas == 0 && chute != numeroAleatorio) {
       System.out.println("Você perdeu! O número era: " + numeroAleatorio);
     }
 
     // Pergunta se o usuário deseja jogar novamente:
-
     System.out.println("Deseja jogar novamente? (s/n)");
     String resposta = scanner.next();
     if (resposta.equalsIgnoreCase("s")) {
@@ -72,6 +74,7 @@ public class Jogo {
     } else {
       System.out.println("Obrigado por jogar!");
     }
+
     scanner.close();
   }
 }
