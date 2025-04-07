@@ -25,7 +25,7 @@ public class Jogo {
       System.out.println("1. Fácil (1 a 50, 10 tentativas)");
       System.out.println("2. Médio (1 a 90, 7 tentativas)");
       System.out.println("3. Difícil (1 a 150, 7 tentativas)");
-      System.out.println("4. Nível Passos (1 a 200, 9 tentativas)");
+      System.out.println("4. Nível Passos (1 a 200, 7 tentativas)");      
       System.out.println("Digite sua opção (1-4): ");
       dificuldade = scanner.nextInt();
       if (dificuldade < 1 || dificuldade > 4) {
@@ -52,7 +52,7 @@ public class Jogo {
         break;
       case 4:
         maxNumero = 200;
-        tentativas = 9;
+        tentativas = 7;
         break;
 
       // Caso o usuário escolha uma opção inválida, define um padrão:
@@ -71,7 +71,7 @@ public class Jogo {
 
     // Mensagens de boas-vindas e instruções:
     System.out.println("Bem-vindo ao jogo de adivinhação!");
-    System.out.println("Tente adivinhar o número entre 1 e 90.");
+    System.out.println("Tente adivinhar o número entre 1 e 200. (dependendo da dificuldade escolhida)");
     System.out.println("Ao chutar uma vez, você receberá dicas sobre a proximidade do seu palpite.");
     System.out.println("Caso a mensagem seja Quente, você está muito perto do número, sendo uma distância de 5 ou menos.");
     System.out.println("Caso a mensagem seja Morno, você está perto do número, sendo uma distância de 6 a 10 do número.");
