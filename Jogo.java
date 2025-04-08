@@ -90,8 +90,7 @@ public class Jogo {
       System.out.println("Caso a mensagem seja Quente, você está muito perto do número, sendo uma distância de 5 ou menos.");
       System.out.println("Caso a mensagem seja Morno, você está perto do número, sendo uma distância de 6 a 10 do número.");
       System.out.println("Caso a mensagem seja Já esteve mais longe, você está a uma distância de 11 a 20 do número.");
-      System.out.println("Caso a mensagem seja 50!, você está a uma distância de 21 a 50 do número.");
-      System.out.println("Caso a mensagem seja Frio, você está longe do número, sendo uma distância de 51 ou mais do número.");
+      System.out.println("Caso a mensagem seja Frio, você está longe do número,");
       System.out.println("Você tem " + tentativas + " tentativas.");
       System.out.println("Digite 2000 para sair do jogo.");
     }
