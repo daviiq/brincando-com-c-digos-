@@ -74,19 +74,27 @@ public class Jogo {
     boolean acertou = false;
     chute = 0;
 
-    // Mensagens de boas-vindas e instruções:
-    System.out.println("=====================================");
-    System.out.println("Bem-vindo ao jogo de adivinhação!");
-    System.out.println("Tente adivinhar o número entre 1 e 1000. (dependendo da dificuldade escolhida)");
-    System.out.println("Ao chutar uma vez, você receberá dicas sobre a proximidade do seu palpite.");
-    System.out.println("Caso a mensagem seja Quente, você está muito perto do número, sendo uma distância de 5 ou menos.");
-    System.out.println("Caso a mensagem seja Morno, você está perto do número, sendo uma distância de 6 a 10 do número.");
-    System.out.println("Caso a mensagem seja Já esteve mais longe, você está a uma distância de 11 a 20 do número.");
-    System.out.println("Caso a mensagem seja 50!, você está a uma distância de 21 a 50 do número.");
-    System.out.println("Caso a mensagem seja Frio, você está longe do número, sendo uma distância de 51 ou mais do número.");
-    System.out.println("Você tem " + tentativas + " tentativas.");
-    System.out.println("Digite 2000 para sair do jogo.");
+    if (dificuldade == 5) {
+      System.out.println("Você escolheu o nível 5. Boa sorte!");
+      System.out.println("Você tem " + tentativas + " tentativas.");
+      System.out.println("Digite 2000 para sair do jogo.");
+    }
+    else {
 
+      // Mensagens de boas-vindas e instruções:
+      System.out.println("====================================================================================================");
+      System.out.println("Bem-vindo ao jogo de adivinhação!");
+      System.out.println("Tente adivinhar o número entre 1 e 1000. (dependendo da dificuldade escolhida)");
+      System.out.println("Ao chutar uma vez, você receberá dicas sobre a proximidade do seu palpite.");
+      System.out.println("Caso a mensagem seja Quente, você está muito perto do número, sendo uma distância de 5 ou menos.");
+      System.out.println("Caso a mensagem seja Morno, você está perto do número, sendo uma distância de 6 a 10 do número.");
+      System.out.println("Caso a mensagem seja Já esteve mais longe, você está a uma distância de 11 a 20 do número.");
+      System.out.println("Caso a mensagem seja 50!, você está a uma distância de 21 a 50 do número.");
+      System.out.println("Caso a mensagem seja Frio, você está longe do número, sendo uma distância de 51 ou mais do número.");
+      System.out.println("Você tem " + tentativas + " tentativas.");
+      System.out.println("Digite 2000 para sair do jogo.");
+    }
+    
     // Palpite do usuário:
     while (chute != numeroAleatorio && tentativas > 0) {
       System.out.print("Digite seu palpite: ");
@@ -123,7 +131,7 @@ public class Jogo {
       else if (diferenca <= 20) {
         System.out.println("Já esteve mais longe.");
       }
-      else if (diferenca <= 50) {
+      else if( dificuldade == 5 && diferenca <= 50) {
         System.out.println("50! Você está longe.");
       }
        else {
