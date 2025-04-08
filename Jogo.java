@@ -67,13 +67,14 @@ public class Jogo {
         tentativas = 7;
         break;
     }
-
+    // Gera um número aleatório entre 1 e maxNumero:
     Random random = new Random();
     int numeroAleatorio = random.nextInt(maxNumero) + 1;
     int tentativasRestantes = tentativas;
     boolean acertou = false;
     chute = 0;
 
+    // Mensagem de boa vinda para o nível 5:
     if (dificuldade == 5) {
       System.out.println("Você escolheu o nível 5. Boa sorte!");
       System.out.println("Você tem " + tentativas + " tentativas.");
