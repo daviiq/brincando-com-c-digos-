@@ -69,11 +69,33 @@
             50% { transform: scale(1.5); }
             100% { opacity: 0; transform: scale(0); }
         }
+        
+        .botao-manual {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #3498db;
+    color: white;
+    padding: 12px 18px;
+    border-radius: 50px;
+    font-size: 16px;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    transition: background 0.3s ease;
+    z-index: 999;
+}
+
+.botao-manual:hover {
+    background-color: #2980b9;
+}
+
     </style>
 </head>
 <body>
     <div class="container">
         <h1>🎯 Jogo de Adivinhação</h1>
+        <!-- Botão flutuante para o manual -->
+<a href="manual.html" class="botao-manual" title="Abrir Manual do Usuário">📘 Manual</a>
         <p>
             <strong>Dificuldade:</strong>
             <select id="seletorDificuldade" onchange="escolherDificuldade()">
