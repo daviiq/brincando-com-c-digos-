@@ -1,0 +1,83 @@
+🎮 Manual do Usuário — Jogo de Adivinhação
+📌 Objetivo do Jogo
+Adivinhar corretamente o número aleatório gerado pelo sistema, dentro do intervalo definido pela dificuldade escolhida, utilizando o número limitado de tentativas disponíveis.
+
+
+
+🛠️ Como Jogar
+1. Escolha a Dificuldade
+Selecione uma das opções no campo Dificuldade:
+
+Nível	Intervalo de Números	Tentativas
+1. Fácil	1 a 50	10
+2. Médio	1 a 90	7
+3. Difícil	1 a 150	5
+4. Nível Passos	1 a 200	7
+5. Boa Sorte	1 a 1000	12
+Após selecionar a dificuldade, o jogo será iniciado automaticamente.
+
+
+
+2. Faça seu Palpite
+Digite um número dentro do intervalo da dificuldade escolhida no campo Seu palpite e clique em Chutar ou pressione Enter.
+
+
+
+3. Receba Dicas
+Após cada palpite, o jogo informará se você está:
+
+🔥 Quente: Muito próximo do número.
+
+🌡️ Morno: Relativamente próximo.
+
+📉 Já esteve mais longe: Uma aproximação distante.
+
+❄️ Frio: Bem longe.
+
+📏 50! (exclusivo do nível 5): Indica uma diferença de até 50 unidades.
+
+
+
+4. Continue Tentando
+O número de tentativas restantes será mostrado após cada tentativa.
+
+Se acertar: 🎉 Uma mensagem de parabéns aparece e fogos de artifício são exibidos.
+
+Se errar todas: 😢 O número correto será revelado e o jogo se encerrará.
+
+🧾 Recursos Adicionais
+🔁 Novo Jogo
+Clique no botão Novo Jogo para reiniciar com os mesmos parâmetros de dificuldade.
+
+🖼️ Exportar Resultado
+Ao vencer, você poderá digitar seu nome e clicar em Exportar Resultado para baixar uma imagem comemorativa com seus dados da partida.
+
+
+
+
+💡 Dicas Úteis
+Se quiser encerrar o jogo manualmente, digite o número 2000 no campo de palpite.
+
+O campo de mensagens exibe o histórico de tentativas.
+
+Após vencer, seu resultado pode ser salvo como imagem para compartilhar com amigos!
+
+
+
+
+🧪 Exemplo de Interação
+O jogador seleciona "Fácil".
+
+Recebe a instrução: “Adivinhe um número entre 1 e 50. Você tem 10 tentativas.”
+
+Faz o primeiro palpite: 25.
+
+Recebe o feedback: “🔥 Quente! Está muito perto.”
+
+Após acertar, recebe: “🎉 Parabéns! Você acertou o número!”
+
+
+
+
+📤 Suporte Técnico
+Caso encontre falhas ou deseje sugerir melhorias, entre em contato com o desenvolvedor.
