@@ -1,0 +1,136 @@
+<html>
+<head>
+    <title>Manual do Usuário - Jogo de Adivinhação</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to right, #d9afd9, #97d9e1);
+            margin: 0;
+            padding: 30px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        }
+
+        h1, h2 {
+            color: #2c3e50;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 30px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #2980b9;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        code {
+            background: #f1f1f1;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎮 Manual do Usuário — Jogo de Adivinhação</h1>
+
+        <h2>📌 Objetivo do Jogo</h2>
+        <p>Adivinhar corretamente o número aleatório gerado pelo sistema, dentro do intervalo definido pela dificuldade escolhida, utilizando o número limitado de tentativas disponíveis.</p>
+
+        <h2>🛠️ Como Jogar</h2>
+
+        <h3>1. Escolha a Dificuldade</h3>
+        <p>Selecione uma das opções no campo <strong>Dificuldade</strong>:</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Nível</th>
+                    <th>Intervalo de Números</th>
+                    <th>Tentativas</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>1. Fácil</td><td>1 a 50</td><td>10</td></tr>
+                <tr><td>2. Médio</td><td>1 a 90</td><td>7</td></tr>
+                <tr><td>3. Difícil</td><td>1 a 150</td><td>5</td></tr>
+                <tr><td>4. Nível Passos</td><td>1 a 200</td><td>7</td></tr>
+                <tr><td>5. Boa Sorte</td><td>1 a 1000</td><td>12</td></tr>
+            </tbody>
+        </table>
+
+        <h3>2. Faça seu Palpite</h3>
+        <p>Digite um número dentro do intervalo da dificuldade escolhida no campo <strong>Seu palpite</strong> e clique em <strong>Chutar</strong> ou pressione <code>Enter</code>.</p>
+
+        <h3>3. Receba Dicas</h3>
+        <p>Após cada palpite, o jogo informará se você está:</p>
+        <ul>
+            <li>🔥 <strong>Quente:</strong> Muito próximo do número.</li>
+            <li>🌡️ <strong>Morno:</strong> Relativamente próximo.</li>
+            <li>📉 <strong>Já esteve mais longe:</strong> Uma aproximação distante.</li>
+            <li>❄️ <strong>Frio:</strong> Bem longe.</li>
+            <li>📏 <strong>50!</strong> (exclusivo do nível 5): Diferença de até 50 unidades.</li>
+        </ul>
+
+        <h3>4. Continue Tentando</h3>
+        <p>O número de tentativas restantes será informado após cada tentativa.</p>
+        <p>Se acertar: 🎉 Uma mensagem de parabéns aparecerá e fogos de artifício serão exibidos.<br>
+        Se errar todas: 😢 O número correto será revelado e o jogo será encerrado.</p>
+
+        <h2>🧾 Recursos Adicionais</h2>
+
+        <h3>🔁 Novo Jogo</h3>
+        <p>Pressione o botão <strong>Novo Jogo</strong> para reiniciar com a mesma dificuldade.</p>
+
+        <h3>🖼️ Exportar Resultado</h3>
+        <p>Ao vencer, digite seu nome e clique em <strong>Exportar Resultado</strong> para baixar uma imagem comemorativa.</p>
+
+        <h2>💡 Dicas Úteis</h2>
+        <ul>
+            <li>Digite <code>2000</code> para encerrar o jogo manualmente.</li>
+            <li>O histórico de tentativas aparece no campo de mensagens.</li>
+            <li>Compartilhe sua vitória exportando seu resultado como imagem!</li>
+        </ul>
+
+        <h2>📤 Suporte Técnico</h2>
+        <p>Caso encontre falhas ou deseje sugerir melhorias, entre em contato com o desenvolvedor.</p>
+
+        <a href="index.html" class="button">🔙 Voltar ao Jogo</a>
+    </div>
+</body>
+</html>
