@@ -2,10 +2,9 @@
 <head>
     <title>Jogo de Adivinhação</title>
     <style>
-        /* Estilo digno de front-end cansado, mas funcional */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(to right, #83a4d4, #b6fbff); /* degrade maroto */
+            background: linear-gradient(to right, #83a4d4, #b6fbff);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -14,17 +13,15 @@
             margin: 0;
         }
 
-        /* Porque título grande = respeito */
         h1 {
             color: #333;
         }
 
-        /* Caixa branca da esperança */
         .container {
             background: white;
             padding: 30px;
             border-radius: 12px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.2); /* sombra do crunch time */
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
             width: 100%;
             max-width: 500px;
         }
@@ -32,14 +29,13 @@
         textarea {
             width: 100%;
             height: 180px;
-            resize: none; /* não deixa o usuário estragar a estética */
+            resize: none;
             padding: 10px;
             font-size: 14px;
             margin-top: 10px;
         }
 
-        input[type="number"] {
-            width: 100px;
+        input[type="number"], input[type="text"] {
             padding: 5px;
             font-size: 16px;
         }
@@ -48,6 +44,7 @@
             padding: 6px 10px;
             font-size: 14px;
             margin-left: 10px;
+            margin-top: 10px;
         }
 
         .input-group {
@@ -57,14 +54,19 @@
         .emoji {
             font-size: 48px;
             display: none;
-            animation: explode 3s ease-in-out forwards; /* explosão de alegria e cansaço */
+            animation: explode 3s ease-in-out forwards;
+        }
+
+        #exportarResultado {
+            display: none;
+            margin-top: 15px;
         }
 
         @keyframes explode {
             0% { opacity: 0; transform: scale(0.5); }
             25% { opacity: 1; transform: scale(1.2); }
             50% { transform: scale(1.5); }
-            100% { opacity: 0; transform: scale(0); } /* sumir igual nosso tempo livre */
+            100% { opacity: 0; transform: scale(0); }
         }
     </style>
 </head>
@@ -73,27 +75,32 @@
         <h1>🎯 Jogo de Adivinhação</h1>
         <p>
             <strong>Dificuldade:</strong>
-            <!-- porque o usuário precisa sofrer com escolhas também -->
             <select id="seletorDificuldade" onchange="escolherDificuldade()">
                 <option value="">Selecione...</option>
                 <option value="1">1. Fácil (1 a 50, 10 tentativas)</option>
                 <option value="2">2. Médio (1 a 90, 7 tentativas)</option>
                 <option value="3">3. Difícil (1 a 150, 5 tentativas)</option>
-                <option value="4">4. Nível Passos (1 a 200, 7 tentativas)</option> <!-- homenagem ao caos -->
+                <option value="4">4. Nível Passos (1 a 200, 7 tentativas)</option>
                 <option value="5">5. Boa Sorte (1 a 1000, 12 tentativas)</option>
             </select>
         </p>
 
         <div class="input-group">
             <strong>Seu palpite:</strong>
-            <!-- onde a mágica (ou a frustração) acontece -->
             <input type="number" id="inputPalpite">
             <button onclick="verificarPalpite()">Chutar</button>
             <button onclick="novoJogo()">Novo Jogo</button>
         </div>
 
         <textarea id="mensagens" readonly></textarea>
-        <div id="fogos" class="emoji">🎆🎇✨</div> <!-- fogos pra fingir que valeu a pena -->
+        <div id="fogos" class="emoji">🎆🎇✨</div>
+
+        <div id="exportarResultado">
+            <input type="text" id="nomeJogador" placeholder="Seu nome">
+            <button onclick="exportarImagem()">Exportar Resultado</button>
+        </div>
+
+        <canvas id="canvasResultado" style="display: none;"></canvas>
     </div>
 
     <script>
@@ -102,7 +109,6 @@
         let numeroAleatorio;
         let dificuldade;
 
-        // pra quem digita ENTER na pressa do TCC
         document.getElementById("inputPalpite").addEventListener("keypress", function (e) {
             if (e.key === "Enter") {
                 verificarPalpite();
@@ -116,30 +122,14 @@
             if (!valor) return;
 
             dificuldade = parseInt(valor);
-            // definição das regras da tortura
             switch (dificuldade) {
-                case 1:
-                    maxNumero = 50;
-                    tentativas = 10;
-                    break;
-                case 2:
-                    maxNumero = 90;
-                    tentativas = 7;
-                    break;
-                case 3:
-                    maxNumero = 150;
-                    tentativas = 5;
-                    break;
-                case 4:
-                    maxNumero = 200;
-                    tentativas = 7;
-                    break;
-                case 5:
-                    maxNumero = 1000;
-                    tentativas = 12;
-                    break;
+                case 1: maxNumero = 50; tentativas = 10; break;
+                case 2: maxNumero = 90; tentativas = 7; break;
+                case 3: maxNumero = 150; tentativas = 5; break;
+                case 4: maxNumero = 200; tentativas = 7; break;
+                case 5: maxNumero = 1000; tentativas = 12; break;
             }
-            novoJogo(); // reinicia o ciclo do sofrimento
+            novoJogo();
         }
 
         function novoJogo() {
@@ -149,6 +139,7 @@
             mensagens.value = `Adivinhe um número entre 1 e ${maxNumero}.\nVocê tem ${tentativas} tentativas.\n`;
             document.getElementById("inputPalpite").disabled = false;
             document.getElementById("inputPalpite").focus();
+            document.getElementById("exportarResultado").style.display = "none";
         }
 
         function verificarPalpite() {
@@ -156,7 +147,7 @@
             const mensagens = document.getElementById("mensagens");
             const entrada = parseInt(input.value);
 
-            if (entrada === 2000) { // easter egg da desistência
+            if (entrada === 2000) {
                 alert("Você saiu do jogo.");
                 return;
             }
@@ -172,7 +163,7 @@
             if (entrada === numeroAleatorio) {
                 novaMensagem += "🎉 Parabéns! Você acertou o número!\n";
                 input.disabled = true;
-                mostrarFogos(); // parabéns! agora vá descansar.
+                mostrarFogos();
             } else {
                 const diferenca = Math.abs(entrada - numeroAleatorio);
                 if (diferenca <= 5) {
@@ -197,15 +188,71 @@
 
             mensagens.value = novaMensagem + mensagens.value;
             input.value = "";
-            input.focus(); // foca de novo pra continuar o sofrimento sem interrupções
+            input.focus();
         }
 
         function mostrarFogos() {
             const fogos = document.getElementById("fogos");
             fogos.style.display = "block";
+            document.getElementById("exportarResultado").style.display = "block";
             setTimeout(() => {
                 fogos.style.display = "none";
-            }, 3000); // 3 segundos de alegria antes do próximo bug
+            }, 3000);
+        }
+
+        function exportarImagem() {
+            const nome = document.getElementById("nomeJogador").value.trim();
+            if (!nome) {
+                alert("Digite seu nome antes de exportar!");
+                return;
+            }
+
+            const canvas = document.getElementById("canvasResultado");
+            const ctx = canvas.getContext("2d");
+            canvas.width = 600;
+            canvas.height = 300;
+
+            const gradiente = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+            gradiente.addColorStop(0, "#83a4d4");
+            gradiente.addColorStop(1, "#b6fbff");
+            ctx.fillStyle = gradiente;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = "#333";
+            ctx.font = "bold 28px Segoe UI";
+            ctx.fillText("🎉 Parabéns, " + nome + "!", 50, 80);
+
+            ctx.font = "20px Segoe UI";
+            ctx.fillText("Você venceu o Jogo de Adivinhação!", 50, 120);
+
+            const dificuldades = {
+                1: "Fácil (1 a 50)",
+                2: "Médio (1 a 90)",
+                3: "Difícil (1 a 150)",
+                4: "Nível Passos (1 a 200)",
+                5: "Boa Sorte (1 a 1000)"
+            };
+
+            const tentativasUsadas = getTentativasUsadas();
+
+            ctx.fillText(`Dificuldade: ${dificuldades[dificuldade]}`, 50, 160);
+            ctx.fillText(`Tentativas usadas: ${tentativasUsadas}`, 50, 190);
+
+            const link = document.createElement("a");
+            link.download = `resultado-${nome}.png`;
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+
+        function getTentativasUsadas() {
+            switch (dificuldade) {
+                case 1: return 10 - tentativas;
+                case 2: return 7 - tentativas;
+                case 3: return 5 - tentativas;
+                case 4: return 7 - tentativas;
+                case 5: return 12 - tentativas;
+            }
+            return "?";
         }
     </script>
 </body>
