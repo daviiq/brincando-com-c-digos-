@@ -134,14 +134,25 @@
         }
 
         function novoJogo() {
-            if (!dificuldade) return;
-            numeroAleatorio = Math.floor(Math.random() * maxNumero) + 1;
-            const mensagens = document.getElementById("mensagens");
-            mensagens.value = `Adivinhe um número entre 1 e ${maxNumero}.\nVocê tem ${tentativas} tentativas.\n`;
-            document.getElementById("inputPalpite").disabled = false;
-            document.getElementById("inputPalpite").focus();
-            document.getElementById("exportarResultado").style.display = "none";
-        }
+    if (!dificuldade) return;
+    
+    // Reseta as tentativas conforme a dificuldade selecionada
+    switch (dificuldade) {
+        case 1: tentativas = 10; break;
+        case 2: tentativas = 7; break;
+        case 3: tentativas = 5; break;
+        case 4: tentativas = 7; break;
+        case 5: tentativas = 12; break;
+    }
+
+    numeroAleatorio = Math.floor(Math.random() * maxNumero) + 1;
+    const mensagens = document.getElementById("mensagens");
+    mensagens.value = `Adivinhe um número entre 1 e ${maxNumero}.\nVocê tem ${tentativas} tentativas.\n`;
+    document.getElementById("inputPalpite").disabled = false;
+    document.getElementById("inputPalpite").focus();
+    document.getElementById("exportarResultado").style.display = "none";
+}
+
 
         function verificarPalpite() {
             const input = document.getElementById("inputPalpite");
