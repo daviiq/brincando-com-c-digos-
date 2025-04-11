@@ -1,161 +1,185 @@
-//Importação de bibliotecas necessárias:
-import java.util.Scanner;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
 import java.util.Random;
 
-// Classe principal do jogo de adivinhação
-public class Jogo {
+public class Jogo extends JFrame {
 
-  // Ideia principal do jogo:
-  public static void main(String[] args) {
+    private int maxNumero;
+    private int tentativas;
+    private int numeroAleatorio;
+    private int dificuldade;
 
-  // Criação de um objeto Scanner para ler a entrada do usuário:
-    Scanner scanner = new Scanner(System.in);
+    private JTextField inputPalpite;
+    private JTextArea areaMensagens;
+    private JButton botaoPalpite;
+    private JButton botaoNovoJogo;
 
-    int maxNumero = 90;
-    int tentativas = 7;
-    int dificuldade = 0;
-    int chute = 0;
+    public Jogo() {
+        setTitle("Jogo de Adivinhação");
+        setSize(500, 400);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
 
-    // Loop para garantir que o usuário escolha um nível de dificuldade válido:
-    while (true) {
-
-      // Mensagem de boas-vindas e opções de dificuldade:
-
-      System.out.println("Escolha o nível de dificuldade:");
-      System.out.println("1. Fácil (1 a 50, 10 tentativas)");
-      System.out.println("2. Médio (1 a 90, 7 tentativas)");
-      System.out.println("3. Difícil (1 a 150, 7 tentativas)");
-      System.out.println("4. Nível Passos (1 a 200, 7 tentativas)");
-      System.out.println("5. Boa Sorte.");      
-      System.out.println("Digite sua opção (1-5): ");
-      dificuldade = scanner.nextInt();
-      if (dificuldade < 1 || dificuldade > 5) {
-      break;
-      } else {
-        System.out.println("Dificuldade escolhida: " + dificuldade);
-        break;
-      }
-    }
-    
-    // Escolha do nível de dificuldade:
-    switch (dificuldade) {
-      case 1:
-        maxNumero = 50;
-        tentativas = 10;
-        break;
-      case 2:
-        maxNumero = 90;
-        tentativas = 7;
-        break;
-      case 3:
-        maxNumero = 150;
-        tentativas = 5;
-        break;
-      case 4:
-        maxNumero = 200;
-        tentativas = 7;
-        break;
-      case 5:
-        maxNumero = 1000;
-        tentativas = 12;
-        break;
-
-      // Caso o usuário escolha uma opção inválida, define um padrão:
-      default:
-        System.out.println("Dificuldade inválida. Usando modo médio.");
-        maxNumero = 90;
-        tentativas = 7;
-        break;
-    }
-    // Gera um número aleatório entre 1 e maxNumero:
-    Random random = new Random();
-    int numeroAleatorio = random.nextInt(maxNumero) + 1;
-    int tentativasRestantes = tentativas;
-    boolean acertou = false;
-    chute = 0;
-
-    // Mensagem de boa vinda para o nível 5:
-    if (dificuldade == 5) {
-      System.out.println("Você escolheu o nível 5. Boa sorte!");
-      System.out.println("Você tem " + tentativas + " tentativas.");
-      System.out.println("Digite 2000 para sair do jogo.");
-    }
-    else {
-
-      // Mensagens de boas-vindas e instruções:
-      System.out.println("====================================================================================================");
-      System.out.println("Bem-vindo ao jogo de adivinhação!");
-      System.out.println("Tente adivinhar o número entre 1 e 1000. (dependendo da dificuldade escolhida)");
-      System.out.println("Ao chutar uma vez, você receberá dicas sobre a proximidade do seu palpite.");
-      System.out.println("Caso a mensagem seja Quente, você está muito perto do número, sendo uma distância de 5 ou menos.");
-      System.out.println("Caso a mensagem seja Morno, você está perto do número, sendo uma distância de 6 a 10 do número.");
-      System.out.println("Caso a mensagem seja Já esteve mais longe, você está a uma distância de 11 a 20 do número.");
-      System.out.println("Caso a mensagem seja Frio, você está longe do número,");
-      System.out.println("Você tem " + tentativas + " tentativas.");
-      System.out.println("Digite 2000 para sair do jogo.");
-    }
-    
-    // Palpite do usuário:
-    while (chute != numeroAleatorio && tentativas > 0) {
-      System.out.print("Digite seu palpite: ");
-      chute = scanner.nextInt();
-
-      // Verifica se o usuário deseja sair do jogo:
-      if (chute == 2000) {
-        System.out.println("Você saiu do jogo.");
-        break;
-      }
-
-      // Verifica se o palpite está dentro do intervalo permitido:
-      if (chute < 1 || chute > maxNumero) {
-        System.out.println("Por favor, digite um número entre 1 e " + maxNumero + ".");
-        continue;
-      }
-
-      // Verifica se acertou o número:
-      if (chute == numeroAleatorio) {
-        System.out.println("Parabéns! Você acertou!");
-        break;
-      }
-
-      // Calcula a diferença entre o palpite e o número aleatório:
-      int diferenca = Math.abs(chute - numeroAleatorio);
-
-      // Dá dicas com base na diferença:
-      if (diferenca <= 5) {
-        System.out.println("Quente! Você está muito perto.");
-      } 
-      else if (diferenca <= 10) {
-        System.out.println("Morno! Você está perto.");
-      }
-      else if (diferenca <= 20) {
-        System.out.println("Já esteve mais longe.");
-      }
-      else if( dificuldade == 5 && diferenca <= 50) {
-        System.out.println("50! Você está longe.");
-      }
-       else {
-        System.out.println("Frio! Você está longe.");
-      }
-
-      // Diminui o número de tentativas restantes :
-      tentativas--;
-      System.out.println("Tentativas restantes: " + tentativas);
+        inicializarComponentes();
+        escolherDificuldade();
+        novoJogo();
     }
 
-    if (tentativas == 0 && chute != numeroAleatorio) {
-      System.out.println("Você perdeu! O número era: " + numeroAleatorio);
+    private void inicializarComponentes() {
+        setLayout(new BorderLayout());
+
+        areaMensagens = new JTextArea();
+        areaMensagens.setEditable(false);
+        areaMensagens.setLineWrap(true);
+        areaMensagens.setWrapStyleWord(true);
+        add(new JScrollPane(areaMensagens), BorderLayout.CENTER);
+
+        JPanel painelInferior = new JPanel();
+        painelInferior.setLayout(new FlowLayout());
+
+        inputPalpite = new JTextField(10);
+        botaoPalpite = new JButton("Chutar");
+        botaoNovoJogo = new JButton("Novo Jogo");
+
+        painelInferior.add(new JLabel("Seu palpite:"));
+        painelInferior.add(inputPalpite);
+        painelInferior.add(botaoPalpite);
+        painelInferior.add(botaoNovoJogo);
+
+        add(painelInferior, BorderLayout.SOUTH);
+
+        botaoPalpite.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                verificarPalpite();
+            }
+        });
+
+        botaoNovoJogo.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                escolherDificuldade();
+                novoJogo();
+            }
+        });
     }
 
-    // Pergunta se o usuário deseja jogar novamente:
-    System.out.println("Deseja jogar novamente? (s/n)");
-    String resposta = scanner.next();
-    if (resposta.equalsIgnoreCase("s")) {
-      main(args); 
-    } else {
-      System.out.println("Obrigado por jogar!");
+    private void escolherDificuldade() {
+        String[] opcoes = {
+            "1. Fácil (1 a 50, 10 tentativas)",
+            "2. Médio (1 a 90, 7 tentativas)",
+            "3. Difícil (1 a 150, 5 tentativas)",
+            "4. Nível Passos (1 a 200, 7 tentativas)",
+            "5. Boa Sorte (1 a 1000, 12 tentativas)"
+        };
+        String escolha = (String) JOptionPane.showInputDialog(
+            this,
+            "Escolha a dificuldade:",
+            "Dificuldade",
+            JOptionPane.QUESTION_MESSAGE,
+            null,
+            opcoes,
+            opcoes[1]
+        );
+
+        if (escolha == null) System.exit(0);
+
+        dificuldade = Integer.parseInt(escolha.substring(0, 1));
+
+        switch (dificuldade) {
+            case 1:
+                maxNumero = 50;
+                tentativas = 10;
+                break;
+            case 2:
+                maxNumero = 90;
+                tentativas = 7;
+                break;
+            case 3:
+                maxNumero = 150;
+                tentativas = 5;
+                break;
+            case 4:
+                maxNumero = 200;
+                tentativas = 7;
+                break;
+            case 5:
+                maxNumero = 1000;
+                tentativas = 12;
+                break;
+            default:
+                maxNumero = 90;
+                tentativas = 7;
+                break;
+        }
     }
 
-    scanner.close();
-  }
+    private void novoJogo() {
+        numeroAleatorio = new Random().nextInt(maxNumero) + 1;
+        areaMensagens.setText("Adivinhe um número entre 1 e " + maxNumero + ".\n");
+        areaMensagens.append("Você tem " + tentativas + " tentativas.\n");
+        inputPalpite.setEditable(true);
+        botaoPalpite.setEnabled(true);
+    }
+
+    private void verificarPalpite() {
+        String entrada = inputPalpite.getText();
+        try {
+            int chute = Integer.parseInt(entrada);
+
+            if (chute == 2000) {
+                JOptionPane.showMessageDialog(this, "Você saiu do jogo.");
+                System.exit(0);
+            }
+
+            if (chute < 1 || chute > maxNumero) {
+                areaMensagens.append("Digite um número entre 1 e " + maxNumero + ".\n");
+                return;
+            }
+
+            tentativas--;
+
+            if (chute == numeroAleatorio) {
+                areaMensagens.append("Parabéns! Você acertou o número!\n");
+                inputPalpite.setEditable(false);
+                botaoPalpite.setEnabled(false);
+                return;
+            }
+
+            int diferenca = Math.abs(chute - numeroAleatorio);
+
+            if (diferenca <= 5) {
+                areaMensagens.append("Quente! Está muito perto.\n");
+            } else if (diferenca <= 10) {
+                areaMensagens.append("Morno! Está perto.\n");
+            } else if (diferenca <= 20) {
+                areaMensagens.append("Já esteve mais longe.\n");
+            } else if (dificuldade == 5 && diferenca <= 50) {
+                areaMensagens.append("50! Ainda longe.\n");
+            } else {
+                areaMensagens.append("Frio! Está longe.\n");
+            }
+
+            areaMensagens.append("Tentativas restantes: " + tentativas + "\n");
+
+            if (tentativas == 0) {
+                areaMensagens.append("Você perdeu! O número era: " + numeroAleatorio + "\n");
+                inputPalpite.setEditable(false);
+                botaoPalpite.setEnabled(false);
+            }
+
+        } catch (NumberFormatException e) {
+            areaMensagens.append("Entrada inválida. Digite um número.\n");
+        } finally {
+            inputPalpite.setText("");
+            inputPalpite.requestFocus();
+        }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                new Jogo().setVisible(true);
+            }
+        });
+    }
 }
