@@ -65,13 +65,23 @@ public class Jogo extends JFrame {
         areaMensagens.setWrapStyleWord(true);
         add(new JScrollPane(areaMensagens), BorderLayout.CENTER); //Isso faz com que as mensagens fiquem no centro da janela
 
-        //Criação de painel, layout  e botões:
+        //Criação de painel, layout, botões, filtro:
 
         JPanel painelInferior = new JPanel();
         painelInferior.setLayout(new FlowLayout());
 
         inputPalpite = new JTextField(10);
         ((AbstractDocument) inputPalpite.getDocument()).setDocumentFilter(new FiltroNumerico());
+        inputPalpite.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    botaoPalpite.doClick();
+                }
+            }
+        }
+    );
+
         botaoPalpite = new JButton("Chutar");
         botaoNovoJogo = new JButton("Novo Jogo");
 
@@ -102,9 +112,9 @@ public class Jogo extends JFrame {
 
     private void escolherDificuldade() {
         String[] opcoes = {
-            "1. Fácil (1 a 50, 10 tentativas)",
-            "2. Médio (1 a 90, 7 tentativas)",
-            "3. Difícil (1 a 150, 5 tentativas)",
+            "1. Fácil (1 a 50, 12 tentativas)",
+            "2. Médio (1 a 90, 9 tentativas)",
+            "3. Difícil (1 a 150, 7 tentativas)",
             "4. Nível Passos (1 a 200, 7 tentativas)",
             "5. Boa Sorte."
         };
@@ -132,11 +142,11 @@ public class Jogo extends JFrame {
                 break;
             case 2:
                 maxNumero = 90;
-                tentativas = 7;
+                tentativas = 9;
                 break;
             case 3:
                 maxNumero = 150;
-                tentativas = 5;
+                tentativas = 7;
                 break;
             case 4:
                 maxNumero = 200;
@@ -144,7 +154,7 @@ public class Jogo extends JFrame {
                 break;
             case 5:
                 maxNumero = 1000;
-                tentativas = 12;
+                tentativas = 10;
                 break;
             default:
                 maxNumero = 90;
@@ -161,7 +171,7 @@ public class Jogo extends JFrame {
                       + "🔥 Quente: Você está entre 1 a 5 números de distância.\n"
                       + "🌡️ Morno: Você está entre 6 a 10 números de distância.\n"
                       + "📉 Já esteve mais longe: Você está entre 11 a 20 números de distância.\n"
-                      + "❄️ Frio: Você está a mais de 20 números de distância.\n\n"
+                      + "❄️ Frio: Você está longe do número. \n\n"
                       + "Boa sorte!\n\n";
         areaMensagens.append(regras);
     }
