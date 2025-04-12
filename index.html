@@ -1,7 +1,7 @@
 <html>
 <head>
     <title>Jogo de Adivinhação</title>
-      <link rel="icon" href="https://raw.githubusercontent.com/daviiq/brincando-com-c-digos-/refs/heads/main/favicon.ico?token=GHSAT0AAAAAADCCSBQBDMOB3IZ5MO7ATJKWZ7ZMT3A" type="image/x-icon">
+      <link rel="icon" href="https://raw.githubusercontent.com/daviiq/brincando-com-c-digos-/refs/heads/main/IMGs/favicon.ico?token=GHSAT0AAAAAADBWGCVW4OWIXRMUVGSVR42UZ72SBFA" type="image/x-icon">
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -95,7 +95,7 @@
     <div class="container">
         <h1>🎯 Jogo de Adivinhação</h1>
         <!-- Botão flutuante para o manual -->
-<a href="Manual.html" class="botao-manual" title="Abrir Manual do Usuário">📘 Manual</a>
+<a href="manual.html" class="botao-manual" title="Abrir Manual do Usuário">📘 Manual</a>
         <p>
             <strong>Dificuldade:</strong>
             <select id="seletorDificuldade" onchange="escolherDificuldade()">
@@ -131,69 +131,73 @@
         let tentativas;
         let numeroAleatorio;
         let dificuldade;
-
+    
         document.getElementById("inputPalpite").addEventListener("keypress", function (e) {
             if (e.key === "Enter") {
                 verificarPalpite();
             }
         });
-
+    
         function escolherDificuldade() {
             const seletor = document.getElementById("seletorDificuldade");
             const valor = seletor.value;
-
+    
             if (!valor) return;
-
+    
             dificuldade = parseInt(valor);
             switch (dificuldade) {
-                case 1: maxNumero = 50; tentativas = 10; break;
-                case 2: maxNumero = 90; tentativas = 7; break;
-                case 3: maxNumero = 150; tentativas = 5; break;
-                case 4: maxNumero = 200; tentativas = 7; break;
-                case 5: maxNumero = 1000; tentativas = 12; break;
+                case 1: maxNumero = 50; break;
+                case 2: maxNumero = 90; break;
+                case 3: maxNumero = 150; break;
+                case 4: maxNumero = 200; break;
+                case 5: maxNumero = 1000; break;
             }
             novoJogo();
         }
-
-        function novoJogo() {
-    if (!dificuldade) return;
     
-    // Reseta as tentativas conforme a dificuldade selecionada
-    switch (dificuldade) {
-        case 1: tentativas = 10; break;
-        case 2: tentativas = 7; break;
-        case 3: tentativas = 5; break;
-        case 4: tentativas = 7; break;
-        case 5: tentativas = 12; break;
-    }
-
-    numeroAleatorio = Math.floor(Math.random() * maxNumero) + 1;
-    const mensagens = document.getElementById("mensagens");
-    mensagens.value = `Adivinhe um número entre 1 e ${maxNumero}.\nVocê tem ${tentativas} tentativas.\n`;
-    document.getElementById("inputPalpite").disabled = false;
-    document.getElementById("inputPalpite").focus();
-    document.getElementById("exportarResultado").style.display = "none";
-}
-
-
+        function getTentativasPorDificuldade(nivel) {
+            switch (nivel) {
+                case 1: return 10;
+                case 2: return 7;
+                case 3: return 5;
+                case 4: return 7;
+                case 5: return 12;
+                default: return 0;
+            }
+        }
+    
+        function novoJogo() {
+            if (!dificuldade) return;
+    
+            tentativas = getTentativasPorDificuldade(dificuldade);
+            numeroAleatorio = Math.floor(Math.random() * maxNumero) + 1;
+    
+            const mensagens = document.getElementById("mensagens");
+            mensagens.value = `Adivinhe um número entre 1 e ${maxNumero}.\nVocê tem ${tentativas} tentativas.\n`;
+    
+            document.getElementById("inputPalpite").disabled = false;
+            document.getElementById("inputPalpite").focus();
+            document.getElementById("exportarResultado").style.display = "none";
+        }
+    
         function verificarPalpite() {
             const input = document.getElementById("inputPalpite");
             const mensagens = document.getElementById("mensagens");
             const entrada = parseInt(input.value);
-
+    
             if (entrada === 2000) {
                 alert("Você saiu do jogo.");
                 return;
             }
-
+    
             if (isNaN(entrada) || entrada < 1 || entrada > maxNumero) {
                 mensagens.value = `Digite um número entre 1 e ${maxNumero}.\n` + mensagens.value;
                 return;
             }
-
+    
             tentativas--;
             let novaMensagem = `Você chutou ${entrada}.\n`;
-
+    
             if (entrada === numeroAleatorio) {
                 novaMensagem += "🎉 Parabéns! Você acertou o número!\n";
                 input.disabled = true;
@@ -211,20 +215,20 @@
                 } else {
                     novaMensagem += "❄️ Frio! Está longe.\n";
                 }
-
+    
                 novaMensagem += `Tentativas restantes: ${tentativas}\n`;
-
+    
                 if (tentativas === 0) {
                     novaMensagem += `😢 Você perdeu! O número era: ${numeroAleatorio}\n`;
                     input.disabled = true;
                 }
             }
-
+    
             mensagens.value = novaMensagem + mensagens.value;
             input.value = "";
             input.focus();
         }
-
+    
         function mostrarFogos() {
             const fogos = document.getElementById("fogos");
             fogos.style.display = "block";
@@ -233,32 +237,32 @@
                 fogos.style.display = "none";
             }, 3000);
         }
-
+    
         function exportarImagem() {
             const nome = document.getElementById("nomeJogador").value.trim();
             if (!nome) {
                 alert("Digite seu nome antes de exportar!");
                 return;
             }
-
+    
             const canvas = document.getElementById("canvasResultado");
             const ctx = canvas.getContext("2d");
             canvas.width = 600;
             canvas.height = 300;
-
+    
             const gradiente = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
             gradiente.addColorStop(0, "#83a4d4");
             gradiente.addColorStop(1, "#b6fbff");
             ctx.fillStyle = gradiente;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-
+    
             ctx.fillStyle = "#333";
             ctx.font = "bold 28px Segoe UI";
             ctx.fillText("🎉 Parabéns, " + nome + "!", 50, 80);
-
+    
             ctx.font = "20px Segoe UI";
             ctx.fillText("Você venceu o Jogo de Adivinhação!", 50, 120);
-
+    
             const dificuldades = {
                 1: "Fácil (1 a 50)",
                 2: "Médio (1 a 90)",
@@ -266,28 +270,21 @@
                 4: "Nível Passos (1 a 200)",
                 5: "Boa Sorte (1 a 1000)"
             };
-
+    
             const tentativasUsadas = getTentativasUsadas();
-
+    
             ctx.fillText(`Dificuldade: ${dificuldades[dificuldade]}`, 50, 160);
             ctx.fillText(`Tentativas usadas: ${tentativasUsadas}`, 50, 190);
-
+    
             const link = document.createElement("a");
             link.download = `resultado-${nome}.png`;
             link.href = canvas.toDataURL();
             link.click();
         }
-
+    
         function getTentativasUsadas() {
-            switch (dificuldade) {
-                case 1: return 10 - tentativas;
-                case 2: return 7 - tentativas;
-                case 3: return 5 - tentativas;
-                case 4: return 7 - tentativas;
-                case 5: return 12 - tentativas;
-            }
-            return "?";
+            return getTentativasPorDificuldade(dificuldade) - tentativas;
         }
-    </script>
+    </script>    
 </body>
 </html>
