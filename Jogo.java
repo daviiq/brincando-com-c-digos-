@@ -4,6 +4,27 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Random;
+import javax.swing.text.*;
+
+//Filtro para ler apenas números: 
+
+class FiltroNumerico extends DocumentFilter {
+    @Override
+    public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr)
+    throws BadLocationException {
+        if (string.matches("\\d+")){
+            super.insertString(fb, offset, string, attr);
+        }
+    }
+
+    @Override
+    public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
+    throws BadLocationException {
+    if(text.matches("\\d+")) {
+        super.replace(fb, offset, length, text, attrs);
+    }
+  }
+}
 
 //Inicio do código:
 public class Jogo extends JFrame {
@@ -50,6 +71,7 @@ public class Jogo extends JFrame {
         painelInferior.setLayout(new FlowLayout());
 
         inputPalpite = new JTextField(10);
+        ((AbstractDocument) inputPalpite.getDocument()).setDocumentFilter(new FiltroNumerico());
         botaoPalpite = new JButton("Chutar");
         botaoNovoJogo = new JButton("Novo Jogo");
 
