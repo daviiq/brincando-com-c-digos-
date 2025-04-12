@@ -118,6 +118,7 @@ public class Jogo extends JFrame {
             "4. Nível Passos (1 a 200, 7 tentativas)",
             "5. Boa Sorte."
         };
+        
         String escolha = (String) JOptionPane.showInputDialog(
             this,
             "Escolha a dificuldade:",
@@ -156,7 +157,7 @@ public class Jogo extends JFrame {
                 maxNumero = 1000;
                 tentativas = 10;
                 break;
-            default:
+             default:
                 maxNumero = 90;
                 tentativas = 7;
                 break;
@@ -202,7 +203,7 @@ public class Jogo extends JFrame {
         try {
             int chute = Integer.parseInt(entrada);
 
-            if (chute == 2000) {
+            if (chute == 0) {
                 JOptionPane.showMessageDialog(this, "Você saiu do jogo.");
                 System.exit(0);
             }
