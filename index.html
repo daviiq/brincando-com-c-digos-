@@ -110,7 +110,7 @@
 
         <div class="input-group">
             <strong>Seu palpite:</strong>
-            <input type="number" id="inputPalpite">
+            <input type="text" id="inputPalpite" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
             <button onclick="verificarPalpite()">Chutar</button>
             <button onclick="novoJogo()">Novo Jogo</button>
         </div>
