@@ -6,6 +6,70 @@ import java.awt.event.*;
 import java.util.Random;
 import javax.swing.text.*;
 
+//Tela inicial: 
+
+ class TelaInicio extends JFrame {
+    private JRadioButton temaClaro, temaEscuro;
+    private JComboBox<String> comboDificuldade;
+    private JButton botaoIniciar;
+    private int dificuldadeSelecionada;
+    private boolean temaClaroSelecionado = true;
+
+    public TelaInicio() { 
+        setTitle("Bem Vindo ao Jogo da Adivinhação");
+        setSize(400, 200);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setLayout(new GridLayout(4, 1));
+
+     // Escolha do Tema:
+
+     JPanel painelTema = new JPanel();
+     painelTema.add(new JLabel("Escolha o Tema:"));
+     temaClaro = new JRadioButton("Claro ☀️", true);
+     temaEscuro = new JRadioButton("Escuro 🌙");
+     ButtonGroup grupoTema = new ButtonGroup();
+     grupoTema.add(temaClaro);
+     grupoTema.add(temaEscuro);
+     painelTema.add(temaClaro);
+     painelTema.add(temaEscuro);
+     add(painelTema);
+
+     //Seleção de dificuldade:
+
+     JPanel painelDificuldade = new JPanel();
+     painelDificuldade.add(new JLabel("Escolha a dificuldade: "));
+     String[] opcoes = {
+        "1. Fácil (1 a 50, 10 tentativas)",
+        "2. Médio (1 a 100, 9 tentativas)",
+        "3. Difícil (1 a 200, 8 tentativas)",
+        "4. Nível Passos (1 a 400, 7 tentativas)",
+        "5. Boa Sorte."
+    };
+     comboDificuldade = new JComboBox<>(opcoes);
+     painelDificuldade.add(comboDificuldade);
+     add(painelDificuldade);
+
+     //Botão Iniciar o jogo:
+
+     botaoIniciar = new JButton("Iniciar Jogo");
+     botaoIniciar.addActionListener(e -> iniciarJogo());
+     JPanel painelBotao = new JPanel();
+     painelBotao.add(botaoIniciar);
+     add(painelBotao);
+     }
+
+     private void iniciarJogo() {
+        dificuldadeSelecionada = comboDificuldade.getSelectedIndex() + 1;
+        temaClaroSelecionado = temaClaro.isSelected();
+
+        dispose(); //Fecha a tela de inicio
+        new Jogo(dificuldadeSelecionada, temaClaroSelecionado).setVisible(true); //Abre o jogo
+ 
+    }
+}
+ 
+
 //Filtro para ler apenas números: 
 
 class FiltroNumerico extends DocumentFilter {
@@ -43,16 +107,23 @@ public class Jogo extends JFrame {
     //Criação do Front-End do jogo:
 
     //Criação da posição da página:
-    public Jogo() {
+    public Jogo(int dificuldadeSelecionada, boolean temaClaro) {
+        this.dificuldade = dificuldadeSelecionada;
         setTitle("Jogo de Adivinhação");
         setSize(500, 400);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
         inicializarComponentes();
-        escolherDificuldade();
+        definirParametrosDificuldade(dificuldadeSelecionada);
         novoJogo();
-        aplicarTemaClaro();
+
+        if (temaClaro) {
+            aplicarTemaClaro();
+        }
+        else {
+            aplicarTemaEscuro();
+        }
     }
 
     //Temas personalizados:
@@ -175,9 +246,13 @@ public class Jogo extends JFrame {
 
         if (escolha == null) System.exit(0);
 
+        //dificuldade: 
+
         dificuldade = Integer.parseInt(escolha.substring(0, 1));
+    }
 
         //O que cada dificuldade tem:
+        private void definirParametrosDificuldade(int dificuldade) {
         switch (dificuldade) {
             case 1:
                 maxNumero = 50;
@@ -205,6 +280,7 @@ public class Jogo extends JFrame {
                 break;
         }
     }
+
 
     //Mostra as regras do jogo: 
 
@@ -302,6 +378,6 @@ public class Jogo extends JFrame {
     //Fim do código concluindo o argumento e trazendo novamente caso o usuário deseja jogar novamente:
     
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new Jogo().setVisible(true));
+        SwingUtilities.invokeLater(() -> new TelaInicio().setVisible(true));
     }
 }
