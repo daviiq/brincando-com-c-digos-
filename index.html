@@ -89,6 +89,36 @@
     background-color: #2980b9;
 }
 
+#fogos {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 999;
+}
+
+.emoji-chuva {
+    position: absolute;
+    font-size: 2rem;
+    animation: cair 3s linear forwards;
+}
+
+@keyframes cair {
+    0% {
+        top: -5%;
+        opacity: 1;
+        transform: rotate(0deg);
+    }
+    100% {
+        top: 105%;
+        opacity: 0;
+        transform: rotate(360deg);
+    }
+}
+
     </style>
 </head>
 <body>
@@ -116,7 +146,9 @@
         </div>
 
         <textarea id="mensagens" readonly></textarea>
-        <div id="fogos" class="emoji">🎆🎇✨</div>
+        <div id="fogos"></div>
+<audio id="audioVitoria" src="sound/Vitoria.mp3" preload="auto"></audio>
+
 
         <div id="exportarResultado">
             <input type="text" id="nomeJogador" placeholder="Seu nome">
@@ -178,7 +210,21 @@ function getTentativasPorDificuldade(nivel) {
             document.getElementById("inputPalpite").disabled = false;
             document.getElementById("inputPalpite").focus();
             document.getElementById("exportarResultado").style.display = "none";
+            localStorage.removeItem("jogoAdivinhacao");
         }
+
+        function salvarProgresso() {
+    const mensagens = document.getElementById("mensagens").value;
+    const dados = {
+        dificuldade,
+        maxNumero,
+        numeroAleatorio,
+        tentativas,
+        mensagens
+    };
+    localStorage.setItem("jogoAdivinhacao", JSON.stringify(dados));
+}
+
     
         function verificarPalpite() {
             const input = document.getElementById("inputPalpite");
@@ -227,16 +273,39 @@ function getTentativasPorDificuldade(nivel) {
             mensagens.value = novaMensagem + mensagens.value;
             input.value = "";
             input.focus();
+            salvarProgresso();
         }
     
         function mostrarFogos() {
-            const fogos = document.getElementById("fogos");
-            fogos.style.display = "block";
-            document.getElementById("exportarResultado").style.display = "block";
-            setTimeout(() => {
-                fogos.style.display = "none";
-            }, 3000);
-        }
+    const fogos = document.getElementById("fogos");
+    const audio = document.getElementById("audioVitoria");
+    fogos.innerHTML = ""; // Limpa anteriores
+
+    // Toca o áudio de vitória
+    audio.currentTime = 0;
+    audio.play().catch(() => {
+        console.warn("Falha ao tocar o áudio automaticamente.");
+    });
+
+    // Cria vários emojis caindo
+    const emojis = ["🎆", "🎇", "✨", "🎉", "💥"];
+    for (let i = 0; i < 80; i++) {
+        const emoji = document.createElement("div");
+        emoji.classList.add("emoji-chuva");
+        emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        emoji.style.left = Math.random() * 100 + "vw";
+        emoji.style.fontSize = (Math.random() * 24 + 24) + "px";
+        emoji.style.animationDuration = (Math.random() * 2 + 2) + "s";
+        fogos.appendChild(emoji);
+    }
+
+    document.getElementById("exportarResultado").style.display = "block";
+
+    // Limpa após 4 segundos
+    setTimeout(() => {
+        fogos.innerHTML = "";
+    }, 4000);
+}
     
         function exportarImagem() {
             const nome = document.getElementById("nomeJogador").value.trim();
@@ -285,6 +354,22 @@ function getTentativasPorDificuldade(nivel) {
         function getTentativasUsadas() {
             return getTentativasPorDificuldade(dificuldade) - tentativas;
         }
+
+        window.onload = function () {
+    const dadosSalvos = localStorage.getItem("jogoAdivinhacao");
+    if (dadosSalvos) {
+        const dados = JSON.parse(dadosSalvos);
+        dificuldade = dados.dificuldade;
+        maxNumero = dados.maxNumero;
+        numeroAleatorio = dados.numeroAleatorio;
+        tentativas = dados.tentativas;
+
+        document.getElementById("seletorDificuldade").value = dificuldade;
+        document.getElementById("mensagens").value = dados.mensagens;
+        document.getElementById("inputPalpite").disabled = tentativas <= 0;
+    }
+};
+
     </script>    
 </body>
 </html>
