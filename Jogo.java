@@ -52,6 +52,33 @@ public class Jogo extends JFrame {
         inicializarComponentes();
         escolherDificuldade();
         novoJogo();
+        aplicarTemaClaro();
+    }
+
+    //Temas personalizados:
+    private void aplicarTemaClaro() {
+        getContentPane().setBackground(Color.white);
+        areaMensagens.setBackground(Color.WHITE);
+        areaMensagens.setForeground(Color.BLACK);
+        inputPalpite.setBackground(Color.WHITE);
+        inputPalpite.setForeground(Color.BLACK);
+        botaoPalpite.setBackground(Color.LIGHT_GRAY);
+        botaoPalpite.setForeground(Color.BLACK);
+        botaoNovoJogo.setBackground(Color.LIGHT_GRAY);
+        botaoNovoJogo.setForeground(Color.BLACK);
+    }
+
+    private void aplicarTemaEscuro() {
+        getContentPane().setBackground(Color.DARK_GRAY);
+        areaMensagens.setBackground(new Color(40,40,40));
+        areaMensagens.setForeground(Color.WHITE);
+        inputPalpite.setBackground(new Color(70,70,70));
+        inputPalpite.setForeground(Color.WHITE);
+        botaoPalpite.setBackground(new Color(100,100,100));
+        botaoPalpite.setForeground(Color.WHITE);
+        botaoNovoJogo.setBackground(new Color(100,100,100));
+        botaoNovoJogo.setForeground(Color.WHITE);
+
     }
 
     //Criaçao da janela:
@@ -106,6 +133,21 @@ public class Jogo extends JFrame {
                 novoJogo();
             }
         });
+
+         // Menu de Tema:
+
+         JMenuBar menuBar = new JMenuBar();
+         JMenu menuTema = new JMenu("Tema");
+         JMenuItem itemClaro = new JMenuItem("Claro ☀️");
+         JMenuItem itemEscuro = new JMenuItem("Escuro 🌙");
+
+         itemClaro.addActionListener(e -> aplicarTemaClaro());
+         itemEscuro.addActionListener(e -> aplicarTemaEscuro());
+
+         menuTema.add(itemEscuro);
+         menuTema.add(itemClaro);
+         menuBar.add(menuTema);
+         setJMenuBar(menuBar);
     }
 
     //Define a dificuldade do jogo:
