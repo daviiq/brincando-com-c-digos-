@@ -112,10 +112,10 @@ public class Jogo extends JFrame {
 
     private void escolherDificuldade() {
         String[] opcoes = {
-            "1. Fácil (1 a 50, 12 tentativas)",
-            "2. Médio (1 a 90, 9 tentativas)",
-            "3. Difícil (1 a 150, 7 tentativas)",
-            "4. Nível Passos (1 a 200, 7 tentativas)",
+            "1. Fácil (1 a 50, 10 tentativas)",
+            "2. Médio (1 a 100, 9 tentativas)",
+            "3. Difícil (1 a 200, 8 tentativas)",
+            "4. Nível Passos (1 a 400, 7 tentativas)",
             "5. Boa Sorte."
         };
         
@@ -142,20 +142,20 @@ public class Jogo extends JFrame {
                 tentativas = 10;
                 break;
             case 2:
-                maxNumero = 90;
+                maxNumero = 100;
                 tentativas = 9;
                 break;
             case 3:
-                maxNumero = 150;
-                tentativas = 7;
+                maxNumero = 200;
+                tentativas = 8;
                 break;
             case 4:
-                maxNumero = 200;
+                maxNumero = 400;
                 tentativas = 7;
                 break;
             case 5:
                 maxNumero = 1000;
-                tentativas = 10;
+                tentativas = 8;
                 break;
              default:
                 maxNumero = 90;
