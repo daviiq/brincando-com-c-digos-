@@ -28,13 +28,14 @@
         }
 
         textarea {
-            width: 100%;
-            height: 180px;
-            resize: none;
-            padding: 10px;
-            font-size: 14px;
-            margin-top: 10px;
-        }
+    width: 100%;
+    height: 180px;
+    resize: none;
+    padding: 10px;
+    font-size: 14px;
+    margin-top: 10px;
+    border-radius: 12px;
+}
 
         input[type="number"], input[type="text"] {
             padding: 5px;
@@ -119,13 +120,126 @@
     }
 }
 
+body.dark-mode {
+    background: linear-gradient(to right, #1e1e1e, #2c3e50);
+    color: #f1f1f1;
+}
+
+body.dark-mode .container {
+    background: #2c3e50;
+    color: #f1f1f1;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode select,
+body.dark-mode input,
+body.dark-mode textarea,
+body.dark-mode button {
+    background-color: #34495e;
+    color: #f1f1f1;
+    border: 1px solid #7f8c8d;
+}
+
+.botao-darkmode {
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    background-color: #2c3e50;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 52px;
+    height: 52px;
+    font-size: 22px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    cursor: pointer;
+    transition: transform 0.3s ease, background 0.3s ease;
+    z-index: 999;
+}
+
+.botao-darkmode:hover {
+    background-color: #1abc9c;
+    transform: rotate(180deg);
+}
+
+body.dark-mode h1 {
+    color: white;
+}
+
+.barra-container {
+    margin-top: 20px;
+}
+
+.barra-label {
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.barra-externa {
+    width: 100%;
+    background-color: #e0e0e0;
+    border-radius: 20px;
+    overflow: hidden;
+    height: 24px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.barra-interna {
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(to right, #4CAF50, #81C784);
+    transition: width 0.5s ease-in-out;
+}
+
+/* Dark mode compatível */
+body.dark-mode .barra-label {
+    color: #f1f1f1;
+}
+
+body.dark-mode .barra-externa {
+    background-color: #555;
+}
+
+body.dark-mode .barra-interna {
+    background: linear-gradient(to right, #00c853, #69f0ae);
+}
+
+.info-hub {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    padding: 5px 7px;
+    border-radius: 10px;
+    font-size: 10px;
+    z-index: 998;
+    line-height: 0.8;
+    font-family: Arial, sans-serif;
+    box-shadow: 0 7px 10px rgba(0,0,0,0.3);
+}
+
+/* Compatibilidade com o modo escuro */
+body.dark-mode .info-hub {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: #f1f1f1;
+}
+
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🎯 Jogo de Adivinhação</h1>
+        <div class="info-hub">
+            <p>Versão 1.0.0</p>
+            <p>Desenvolvido por:</p>
+            <p>Igor Rodrigues da Silva</p>
+            <p>Davi Israel Quirino</p>
+        </div>
+        <h1>👾🎯 BitPalpite</h1>
         <!-- Botão flutuante para o manual -->
 <a href="Manual.html" class="botao-manual" title="Abrir Manual do Usuário">📘 Manual</a>
+<button class="botao-darkmode" onclick="alternarModo()">🌙</button>
         <p>
             <strong>Dificuldade:</strong>
             <select id="seletorDificuldade" onchange="escolherDificuldade()">
@@ -148,7 +262,15 @@
         <textarea id="mensagens" readonly></textarea>
         <div id="fogos"></div>
 <audio id="audioVitoria" src="sound/Vitoria.mp3" preload="auto"></audio>
+<audio id="audioDerrota" src="sound/perdeu.mp3" preload="auto"></audio>
+<audio id="audioPalpite" src="sound/pp.mp3" preload="auto"></audio>
 
+<div class="barra-container">
+    <div class="barra-label">Tentativas restantes:</div>
+    <div class="barra-externa">
+        <div class="barra-interna" id="barraProgresso"></div>
+    </div>
+</div>
 
         <div id="exportarResultado">
             <input type="text" id="nomeJogador" placeholder="Seu nome">
@@ -197,6 +319,13 @@ function getTentativasPorDificuldade(nivel) {
         default: return 0;
     }
 }
+
+function atualizarBarraProgresso() {
+        const barra = document.getElementById("barraProgresso");
+        const total = getTentativasPorDificuldade(dificuldade);
+        const percentual = Math.max((tentativas / total) * 100, 0);
+        barra.style.width = percentual + "%";
+    }
     
         function novoJogo() {
             if (!dificuldade) return;
@@ -211,6 +340,7 @@ function getTentativasPorDificuldade(nivel) {
             document.getElementById("inputPalpite").focus();
             document.getElementById("exportarResultado").style.display = "none";
             localStorage.removeItem("jogoAdivinhacao");
+            atualizarBarraProgresso();
         }
 
         function salvarProgresso() {
@@ -226,55 +356,65 @@ function getTentativasPorDificuldade(nivel) {
 }
 
     
-        function verificarPalpite() {
-            const input = document.getElementById("inputPalpite");
-            const mensagens = document.getElementById("mensagens");
-            const entrada = parseInt(input.value);
-    
-            if (entrada === 2000) {
-                alert("Você saiu do jogo.");
-                return;
-            }
-    
-            if (isNaN(entrada) || entrada < 1 || entrada > maxNumero) {
-                mensagens.value = `Digite um número entre 1 e ${maxNumero}.\n` + mensagens.value;
-                return;
-            }
-    
-            tentativas--;
-            let novaMensagem = `Você chutou ${entrada}.\n`;
-    
-            if (entrada === numeroAleatorio) {
-                novaMensagem += "🎉 Parabéns! Você acertou o número!\n";
-                input.disabled = true;
-                mostrarFogos();
-            } else {
-                const diferenca = Math.abs(entrada - numeroAleatorio);
-                if (diferenca <= 5) {
-                    novaMensagem += "🔥 Quente! Está muito perto.\n";
-                } else if (diferenca <= 10) {
-                    novaMensagem += "🌡️ Morno! Está perto.\n";
-                } else if (diferenca <= 20) {
-                    novaMensagem += "📉 Já esteve mais longe.\n";
-                } else if (dificuldade === 5 && diferenca <= 50) {
-                    novaMensagem += "📏 50! Ainda longe.\n";
-                } else {
-                    novaMensagem += "❄️ Frio! Está longe.\n";
-                }
-    
-                novaMensagem += `Tentativas restantes: ${tentativas}\n`;
-    
-                if (tentativas === 0) {
-                    novaMensagem += `😢 Você perdeu! O número era: ${numeroAleatorio}\n`;
-                    input.disabled = true;
-                }
-            }
-    
-            mensagens.value = novaMensagem + mensagens.value;
-            input.value = "";
-            input.focus();
-            salvarProgresso();
+function verificarPalpite() {
+    const input = document.getElementById("inputPalpite");
+    const mensagens = document.getElementById("mensagens");
+    const entrada = parseInt(input.value);
+
+    // Toca o som do palpite
+    const audioPalpite = document.getElementById("audioPalpite");
+    audioPalpite.currentTime = 0;
+    audioPalpite.play().catch(() => {
+        console.warn("Não foi possível tocar o som do palpite automaticamente.");
+    });
+
+    if (entrada === 2000) {
+        alert("Você saiu do jogo.");
+        return;
+    }
+
+    if (isNaN(entrada) || entrada < 1 || entrada > maxNumero) {
+        mensagens.value = `Digite um número entre 1 e ${maxNumero}.\n` + mensagens.value;
+        return;
+    }
+
+    tentativas--;
+    atualizarBarraProgresso();
+    let novaMensagem = `Você chutou ${entrada}.\n`;
+
+    const diferenca = Math.abs(entrada - numeroAleatorio);
+
+    if (entrada === numeroAleatorio) {
+        novaMensagem += "🎉 Parabéns! Você acertou o número!\n";
+        input.disabled = true;
+        mostrarFogos();
+    } else {
+        if (diferenca <= 5) {
+            novaMensagem += "🔥 Quente! Está muito perto.\n";
+        } else if (diferenca <= 10) {
+            novaMensagem += "🌡️ Morno! Está perto.\n";
+        } else if (diferenca <= 20) {
+            novaMensagem += "📉 Já esteve mais longe.\n";
+        } else if (dificuldade === 5 && diferenca <= 50) {
+            novaMensagem += "📏 50! Ainda longe.\n";
+        } else {
+            novaMensagem += "❄️ Frio! Está longe.\n";
         }
+
+        novaMensagem += `Tentativas restantes: ${tentativas}\n`;
+
+        if (tentativas === 0) {
+            novaMensagem += `😢 Você perdeu! O número era: ${numeroAleatorio}\n`;
+            input.disabled = true;
+            mostrarDerrota();
+        }
+    }
+
+    mensagens.value = novaMensagem + mensagens.value;
+    input.value = "";
+    input.focus();
+    salvarProgresso();
+}
     
         function mostrarFogos() {
     const fogos = document.getElementById("fogos");
@@ -306,6 +446,36 @@ function getTentativasPorDificuldade(nivel) {
         fogos.innerHTML = "";
     }, 4000);
 }
+
+function mostrarDerrota() {
+    const fogos = document.getElementById("fogos");
+    const audio = document.getElementById("audioDerrota");
+    fogos.innerHTML = ""; // Limpa anteriores
+
+    // Toca o áudio de derrota
+    audio.currentTime = 0;
+    audio.play().catch(() => {
+        console.warn("Falha ao tocar o áudio de derrota.");
+    });
+
+    // Cria emojis de derrota caindo
+    const emojis = ["💀", "☠️", "😵", "😭"];
+    for (let i = 0; i < 60; i++) {
+        const emoji = document.createElement("div");
+        emoji.classList.add("emoji-chuva");
+        emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        emoji.style.left = Math.random() * 100 + "vw";
+        emoji.style.fontSize = (Math.random() * 20 + 20) + "px";
+        emoji.style.animationDuration = (Math.random() * 2 + 2) + "s";
+        fogos.appendChild(emoji);
+    }
+
+    // Limpa após 4 segundos
+    setTimeout(() => {
+        fogos.innerHTML = "";
+    }, 4000);
+}
+
     
         function exportarImagem() {
             const nome = document.getElementById("nomeJogador").value.trim();
@@ -367,6 +537,39 @@ function getTentativasPorDificuldade(nivel) {
         document.getElementById("seletorDificuldade").value = dificuldade;
         document.getElementById("mensagens").value = dados.mensagens;
         document.getElementById("inputPalpite").disabled = tentativas <= 0;
+    }
+};
+
+function alternarModo() {
+    const corpo = document.body;
+    const botao = document.querySelector('.botao-darkmode');
+
+    corpo.classList.toggle('dark-mode');
+    const modoAtual = corpo.classList.contains('dark-mode') ? 'dark' : 'light';
+    localStorage.setItem("modoNoturno", modoAtual);
+
+    botao.textContent = modoAtual === 'dark' ? '☀️' : '🌙';
+}
+
+window.onload = function () {
+    const dadosSalvos = localStorage.getItem("jogoAdivinhacao");
+    if (dadosSalvos) {
+        const dados = JSON.parse(dadosSalvos);
+        dificuldade = dados.dificuldade;
+        maxNumero = dados.maxNumero;
+        numeroAleatorio = dados.numeroAleatorio;
+        tentativas = dados.tentativas;
+
+        document.getElementById("seletorDificuldade").value = dificuldade;
+        document.getElementById("mensagens").value = dados.mensagens;
+        document.getElementById("inputPalpite").disabled = tentativas <= 0;
+    }
+
+    // Restaurar modo noturno, se estiver ativado
+    const modoSalvo = localStorage.getItem("modoNoturno");
+    if (modoSalvo === "dark") {
+        document.body.classList.add("dark-mode");
+        document.querySelector('.botao-darkmode').textContent = '☀️';
     }
 };
 
