@@ -231,7 +231,7 @@ body.dark-mode .info-hub {
 <body>
     <div class="container">
         <div class="info-hub">
-            <p>Versão 1.0.0</p>
+            <p>Versão 1.1.0</p>
             <p>Desenvolvido por:</p>
             <p>Igor Rodrigues da Silva</p>
             <p>Davi Israel Quirino</p>
@@ -245,10 +245,10 @@ body.dark-mode .info-hub {
             <select id="seletorDificuldade" onchange="escolherDificuldade()">
                 <option value="">Selecione...</option>
                 <option value="1">1. Fácil (1 a 50, 10 tentativas)</option>
-                <option value="2">2. Médio (1 a 100, 9 tentativas)</option>
-                <option value="3">3. Difícil (1 a 200, 8 tentativas)</option>
-                <option value="4">4. Nível Passos (1 a 400, 7 tentativas)</option>
-                <option value="5">5. Boa Sorte (1 a 800, 6 tentativas)</option>
+                <option value="2">2. Médio (1 a 100, 10 tentativas)</option>
+                <option value="3">3. Difícil (1 a 200, 10 tentativas)</option>
+                <option value="4">4. Nível Passos (1 a 400, 10 tentativas)</option>
+                <option value="5">5. Boa Sorte (1 a 800, 10 tentativas)</option>
             </select>            
         </p>
 
@@ -312,10 +312,10 @@ body.dark-mode .info-hub {
 function getTentativasPorDificuldade(nivel) {
     switch (nivel) {
         case 1: return 10;
-        case 2: return 9;
-        case 3: return 8;
-        case 4: return 7;
-        case 5: return 6;
+        case 2: return 10;
+        case 3: return 10;
+        case 4: return 10;
+        case 5: return 10;
         default: return 0;
     }
 }
