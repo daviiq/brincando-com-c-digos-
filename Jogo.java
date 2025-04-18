@@ -298,6 +298,7 @@ public class Jogo extends JFrame {
     //Cria um novo jogo, e se a dificuldade for a 5 não mostra as regras:
 
     private void novoJogo() {
+        definirParametrosDificuldade(dificuldade);
         numeroAleatorio = new Random().nextInt(maxNumero) + 1;
         areaMensagens.setText(""); // Limpa mensagens
 
